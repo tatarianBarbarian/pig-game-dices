@@ -36,4 +36,19 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
     diceDOM.style.display = "block";
     diceDOM.src = "dice-" + dice + ".png";
 
+    if (dice !== 1) {
+        roundScore += dice;
+        document.getElementById("current-" + activePlayer).textContent = roundScore;
+    } else {
+        roundScore = 0;
+        document.getElementById("current-" + activePlayer).textContent = 0;
+        document.querySelector(".player-" + activePlayer + "-panel").classList.toggle("active");
+
+        activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+
+        document.querySelector(".player-" + activePlayer + "-panel").classList.toggle("active");
+
+        diceDOM.style.display = "none";
+    }
+
 })

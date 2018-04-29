@@ -14,28 +14,38 @@ GAME RULES:
 
 var scores, roundScore, activePlayer;
 
-scores = [0,0];
-roundScore = 0;
-activePlayer = 0;
+
 
 var diceDOM = document.querySelector(".dice");
-
-//Set all scores to 0
 
 //New game state
 startNewGame();
 function startNewGame() {
+    //Hide initial dice
+    diceDOM.style.display = "none";
+
+    //Get to 0
+    scores = [0,0];
+    roundScore = 0;
+    activePlayer = 0;
     document.getElementById("score-0").textContent = 0;
     document.getElementById("current-0").textContent = 0;
     document.getElementById("score-1").textContent = 0;
     document.getElementById("current-1").textContent = 0;
 
+    document.getElementById("name-" + 0).textContent = "Player 1";
+    document.getElementById("name-" + 1).textContent = "Player 2";
 
+    document.querySelector(".player-0-panel").classList.remove("winner");
+    document.querySelector(".player-1-panel").classList.remove("winner");
 
+    document.querySelector(".player-1-panel").classList.remove("active");
+    document.querySelector(".player-1-panel").classList.remove("active");
+
+    document.querySelector(".player-0-panel").classList.add("active");
 }
 
-//Hide initial dice
-diceDOM.style.display = "none";
+
 
 
 document.querySelector('.btn-roll').addEventListener('click', function(){
@@ -80,3 +90,5 @@ function nextPlayer() {
         document.querySelector(".player-1-panel").classList.toggle("active");
         diceDOM.style.display = "none";
 }
+
+document.querySelector(".btn-new").addEventListener('click', startNewGame);

@@ -54,7 +54,7 @@ function startNewGame() {
 }
 
 
-
+var rollCount = 0;
 
 document.querySelector('.btn-roll').addEventListener('click', function(){
     if (gamePlaying) {
@@ -62,12 +62,27 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
         diceDOM.style.display = "block";
         diceDOM.src = "dice-" + dice + ".png";
 
-        if (dice !== 1) {
+
+        if (dice !== 6) {
+            rollCount = 0;
             roundScore += dice;
             document.getElementById("current-" + activePlayer).textContent = roundScore;
-        } else {
-            nextPlayer();
         }
+        else if (dice === 6) {
+            roundScore += dice;
+            document.getElementById("current-" + activePlayer).textContent = roundScore;
+            ++rollCount;
+            if (rollCount === 2) {
+                rollCount = 0;
+                nextPlayer();
+            } else if (rollCount < 2) {
+                document.getElementById("current-" + activePlayer).textContent = roundScore;
+            }
+
+        }
+//        else {
+//            nextPlayer();
+//        }
     }
 
 });
@@ -89,7 +104,7 @@ document.querySelector(".btn-hold").addEventListener('click', function() {
             document.getElementById("name-" + activePlayer).textContent = "WINNER";
             diceDOM.style.display = 'none';
 
-            //Off th game
+            //Off the game
 
             gamePlaying = false;
         } else {

@@ -12,10 +12,10 @@ GAME RULES:
 
 
 
-var scores, roundScore, activePlayer, gamePlaying;
+var scores, roundScore, activePlayer, gamePlaying, pointsToWin;
 
 
-
+pointsToWin = document.getElementById("points").value;
 var diceDOM = document.querySelector(".dice");
 
 //New game state
@@ -98,7 +98,7 @@ document.querySelector(".btn-hold").addEventListener('click', function() {
         document.getElementById("score-" + activePlayer).textContent = scores[activePlayer];
 
         //Check if player is winner
-        if (scores[activePlayer] >= 100) {
+        if (scores[activePlayer] >= pointsToWin) {
             document.querySelector(".player-" + activePlayer + "-panel").classList.add("winner");
             document.querySelector(".player-" + activePlayer + "-panel").classList.remove("active");
             document.getElementById("name-" + activePlayer).textContent = "WINNER";

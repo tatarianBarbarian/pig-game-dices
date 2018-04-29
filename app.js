@@ -12,7 +12,7 @@ GAME RULES:
 
 
 
-var scores, roundScore, activePlayer;
+var scores, roundScore, activePlayer, gamePlaying;
 
 
 
@@ -21,10 +21,18 @@ var diceDOM = document.querySelector(".dice");
 //New game state
 startNewGame();
 function startNewGame() {
+
+    //Set correct state of the game
+
+    gamePlaying = true;
+
+
     //Hide initial dice
+
     diceDOM.style.display = "none";
 
     //Get to 0
+
     scores = [0,0];
     roundScore = 0;
     activePlayer = 0;
@@ -49,15 +57,17 @@ function startNewGame() {
 
 
 document.querySelector('.btn-roll').addEventListener('click', function(){
-    var dice = Math.floor(Math.random() * 6) + 1;
-    diceDOM.style.display = "block";
-    diceDOM.src = "dice-" + dice + ".png";
+    if (gamePlaying) {
+        var dice = Math.floor(Math.random() * 6) + 1;
+        diceDOM.style.display = "block";
+        diceDOM.src = "dice-" + dice + ".png";
 
-    if (dice !== 1) {
-        roundScore += dice;
-        document.getElementById("current-" + activePlayer).textContent = roundScore;
-    } else {
-        nextPlayer();
+        if (dice !== 1) {
+            roundScore += dice;
+            document.getElementById("current-" + activePlayer).textContent = roundScore;
+        } else {
+            nextPlayer();
+        }
     }
 
 });
@@ -65,20 +75,26 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
 
 document.querySelector(".btn-hold").addEventListener('click', function() {
 
-    //Update scrore
-    scores[activePlayer] += roundScore;
+    if (gamePlaying) {
+        //Update scrore
+        scores[activePlayer] += roundScore;
 
-    //Update UI
-    document.getElementById("score-" + activePlayer).textContent = scores[activePlayer];
+        //Update UI
+        document.getElementById("score-" + activePlayer).textContent = scores[activePlayer];
 
-    //Check if player is winner
-    if (scores[activePlayer] >= 20) {
-        document.querySelector(".player-" + activePlayer + "-panel").classList.add("winner");
-        document.querySelector(".player-" + activePlayer + "-panel").classList.remove("active");
-        document.getElementById("name-" + activePlayer).textContent = "WINNER";
-        diceDOM.style.display = 'none';
-    } else {
-        nextPlayer();
+        //Check if player is winner
+        if (scores[activePlayer] >= 100) {
+            document.querySelector(".player-" + activePlayer + "-panel").classList.add("winner");
+            document.querySelector(".player-" + activePlayer + "-panel").classList.remove("active");
+            document.getElementById("name-" + activePlayer).textContent = "WINNER";
+            diceDOM.style.display = 'none';
+
+            //Off th game
+
+            gamePlaying = false;
+        } else {
+            nextPlayer();
+        }
     }
 });
 

@@ -16,7 +16,8 @@ var scores, roundScore, activePlayer, gamePlaying, pointsToWin;
 
 
 pointsToWin = document.getElementById("points").value;
-var diceDOM = document.querySelector(".dice");
+var diceDOM = document.querySelectorAll(".dice");
+
 
 //New game state
 startNewGame();
@@ -29,7 +30,8 @@ function startNewGame() {
 
     //Hide initial dice
 
-    diceDOM.style.display = "none";
+    diceDOM[0].style.display = "none";
+    diceDOM[1].style.display = "none";
 
     //Get to 0
 
@@ -58,18 +60,21 @@ var rollCount = 0;
 
 document.querySelector('.btn-roll').addEventListener('click', function(){
     if (gamePlaying) {
-        var dice = Math.floor(Math.random() * 6) + 1;
-        diceDOM.style.display = "block";
-        diceDOM.src = "dice-" + dice + ".png";
+        var dice = [Math.floor(Math.random() * 6) + 1,Math.floor(Math.random() * 6) + 1];
+        for (i = 0; i < diceDOM.length; i++){
+            diceDOM[i].style.display = "block";
+            diceDOM[i].src = "dice-" + dice[i] + ".png";
+        }
 
-
-        if (dice !== 6) {
+        if (dice[0] !== 6 && dice[1] !== 6) {
             rollCount = 0;
-            roundScore += dice;
+            roundScore += dice[0];
+            roundScore += dice[1];
             document.getElementById("current-" + activePlayer).textContent = roundScore;
         }
-        else if (dice === 6) {
-            roundScore += dice;
+        else if (dice[0] || dice[1] === 6) {
+            roundScore += dice[0];
+            roundScore += dice[1];
             document.getElementById("current-" + activePlayer).textContent = roundScore;
             ++rollCount;
             if (rollCount === 2) {
@@ -102,10 +107,10 @@ document.querySelector(".btn-hold").addEventListener('click', function() {
             document.querySelector(".player-" + activePlayer + "-panel").classList.add("winner");
             document.querySelector(".player-" + activePlayer + "-panel").classList.remove("active");
             document.getElementById("name-" + activePlayer).textContent = "WINNER";
-            diceDOM.style.display = 'none';
+            diceDOM[0].style.display = 'none';
+            diceDOM[1].style.display = 'none';
 
             //Off the game
-
             gamePlaying = false;
         } else {
             nextPlayer();
@@ -123,3 +128,6 @@ function nextPlayer() {
 }
 
 document.querySelector(".btn-new").addEventListener('click', startNewGame);
+document.getElementById("points").addEventListener("change", function(){
+    pointsToWin = document.getElementById("points").value;
+});
